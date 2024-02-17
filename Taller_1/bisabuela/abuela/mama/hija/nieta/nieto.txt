@@ -1,0 +1,5 @@
+nombre: Carl
+apellido: Quintero
+estatura: 1.75
+rh: 0+
+fechaNacimiento: 22/04/2024

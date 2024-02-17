@@ -1,0 +1,5 @@
+nombre: Ester
+apellido: Sanchez
+estatura: 1.60
+rh: 0-
+fechaNacimiento: 02/02/1930

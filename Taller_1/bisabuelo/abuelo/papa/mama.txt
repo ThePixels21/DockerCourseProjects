@@ -1,0 +1,5 @@
+nombre: Milena
+apellido: Rincón
+estatura: 1.65
+rh: 0+
+fechaNacimiento: 14/11/1975

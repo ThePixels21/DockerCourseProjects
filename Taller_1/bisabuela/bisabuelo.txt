@@ -1,0 +1,5 @@
+nombre: Cesar
+apellido: Quintero
+estatura: 1.70
+rh: 0+
+fechaNacimiento: 03/03/1930

@@ -1,0 +1,5 @@
+nombre: Javier
+apellido: Quintero
+estatura: 1.78
+rh: 0+
+fechaNacimiento: 11/02/1975

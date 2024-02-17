@@ -1,0 +1,5 @@
+nombre: Maria
+apellido: Romero
+estatura: 1.62
+rh: 0+
+fechaNacimiento: 10/02/2024

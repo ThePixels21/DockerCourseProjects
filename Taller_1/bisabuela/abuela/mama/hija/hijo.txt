@@ -1,0 +1,5 @@
+nombre: Santiago
+apellido: Quintero
+estatura: 1.76
+rh: 0+
+fechaNacimiento: 21/05/2004

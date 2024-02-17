@@ -1,0 +1,5 @@
+nombre: Carla
+apellido: Quintero
+estatura: 1.62
+rh: 0-
+fechaNacimiento: 12/10/2006
