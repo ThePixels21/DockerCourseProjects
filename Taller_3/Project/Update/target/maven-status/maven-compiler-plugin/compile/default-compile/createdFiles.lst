@@ -1,0 +1,14 @@
+com\pixels\crudbackend\CrudBackendApplication.class
+com\pixels\crudbackend\controllers\PaisREST.class
+com\pixels\crudbackend\controllers\EstadoREST.class
+com\pixels\crudbackend\repositories\EstadoRepository.class
+com\pixels\crudbackend\repositories\PersonaRepository.class
+com\pixels\crudbackend\controllers\PersonaREST.class
+com\pixels\crudbackend\repositories\PaisRepository.class
+com\pixels\crudbackend\model\Pais.class
+com\pixels\crudbackend\services\PersonaService.class
+com\pixels\crudbackend\services\PaisService.class
+com\pixels\crudbackend\model\Persona.class
+com\pixels\crudbackend\services\EstadoService.class
+com\pixels\crudbackend\CrudBackendApplication$1.class
+com\pixels\crudbackend\model\Estado.class
