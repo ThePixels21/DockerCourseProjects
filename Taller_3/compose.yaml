@@ -1,0 +1,64 @@
+version: '3'
+services:
+  create:
+    image: thepixels21/spring-create
+    restart: always
+    ports:
+      - "8081:8080"
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+      
+  read:
+    image: thepixels21/spring-read
+    restart: always
+    ports:
+      - "8082:8080"
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+      
+  update:
+    image: thepixels21/spring-update
+    restart: always
+    ports:
+      - "8083:8080"
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+      
+  delete:
+    image: thepixels21/spring-delete
+    restart: always
+    ports:
+      - "8084:8080"
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+      
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8085:80
+    environment:
+      - PMA_ARBITRARY=1
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: personasdb
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./my-datavolume:/var/lib/mysql
