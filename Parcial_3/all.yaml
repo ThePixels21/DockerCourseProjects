@@ -1,0 +1,316 @@
+#Mysql
+#Persistent Volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+#Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        - name: MYSQL_DATABASE
+          value: personasdb
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql
+---
+#PhpMyAdmin
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin-deployment
+  labels:
+    app: phpmyadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      containers:
+        - name: phpmyadmin
+          image: phpmyadmin/phpmyadmin
+          ports:
+            - containerPort: 80
+          env:
+            - name: PMA_HOST
+              value: mysql
+            - name: PMA_PORT
+              value: "3306"
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-service
+spec:
+  type: NodePort
+  selector:
+    app: phpmyadmin
+  ports:
+  - protocol: TCP
+    port: 8085
+    targetPort: 80
+---
+#Spring Read
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: read-deployment
+  labels:
+    app: read
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: read
+  template:
+    metadata:
+      labels:
+        app: read
+    spec:
+      containers:
+        - name: read
+          image: thepixels21/spring-read
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_PORT
+              value: "3306"
+      restartPolicy: Always
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: read-service
+spec:
+  type: NodePort
+  selector:
+    app: read
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8080
+---
+#Spring Create
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: create-deployment
+  labels:
+    app: create
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: create
+  template:
+    metadata:
+      labels:
+        app: create
+    spec:
+      containers:
+        - name: create
+          image: thepixels21/spring-create
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_PORT
+              value: "3306"
+      restartPolicy: Always
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: create-service
+spec:
+  type: NodePort
+  selector:
+    app: create
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8080
+---
+#Spring Update
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: update-deployment
+  labels:
+    app: update
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: update
+  template:
+    metadata:
+      labels:
+        app: update
+    spec:
+      containers:
+        - name: update
+          image: thepixels21/spring-update
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_PORT
+              value: "3306"
+      restartPolicy: Always
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: update-service
+spec:
+  type: NodePort
+  selector:
+    app: update
+  ports:
+  - protocol: TCP
+    port: 8083
+    targetPort: 8080
+---
+#Spring Delete
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delete-deployment
+  labels:
+    app: delete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delete
+  template:
+    metadata:
+      labels:
+        app: delete
+    spec:
+      containers:
+        - name: delete
+          image: thepixels21/spring-delete
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_PORT
+              value: "3306"
+      restartPolicy: Always
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: delete-service
+spec:
+  type: NodePort
+  selector:
+    app: delete
+  ports:
+  - protocol: TCP
+    port: 8084
+    targetPort: 8080
+

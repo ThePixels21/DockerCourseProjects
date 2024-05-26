@@ -1,0 +1,46 @@
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: update-deployment
+  labels:
+    app: update
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: update
+  template:
+    metadata:
+      labels:
+        app: update
+    spec:
+      containers:
+        - name: update
+          image: thepixels21/spring-update
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_PORT
+              value: "3306"
+      restartPolicy: Always
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: update-service
+spec:
+  type: NodePort
+  selector:
+    app: update
+  ports:
+  - protocol: TCP
+    port: 8083
+    targetPort: 8080

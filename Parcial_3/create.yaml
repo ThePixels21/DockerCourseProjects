@@ -1,0 +1,46 @@
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: create-deployment
+  labels:
+    app: create
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: create
+  template:
+    metadata:
+      labels:
+        app: create
+    spec:
+      containers:
+        - name: create
+          image: thepixels21/spring-create
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_PORT
+              value: "3306"
+      restartPolicy: Always
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: create-service
+spec:
+  type: NodePort
+  selector:
+    app: create
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8080
